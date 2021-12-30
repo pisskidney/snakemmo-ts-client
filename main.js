@@ -143,11 +143,9 @@ function receiveMoves(websocket) {
                 drawApples(apples);
                 break;
             case 'win':
-                showMessage(`Player ${event.player} wins!`);
                 websocket.close(1000);
                 break;
             case 'error':
-                showMessage(event.message);
                 break;
             default:
                 throw new Error(`Unsupported event type: ${event.type}.`);
