@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <style>
-    body {
+    html {
+        font-family: Arial, Helvetica, sans-serif;
     }
     #board {
         position: relative;
+        transition: opacity 1s ease-in;
     }
-    #panel {
+    .panel#death-screen {
+        display: none;
+    }
+    .panel button#retry {
+        font-size: 22px;
+    }
+    .panel {
         width: 100%;
         height: 100%;
         position: absolute;
@@ -17,32 +25,41 @@
         align-items: center;
         font-size: 11px;
     }
-        #panel input {
-            width: 100px;
-            margin-bottom: 5px;
-            padding: 5px;
-            border-radius: 3px;
-            border: solid 1px #ddd;
-        }
-        #panel button {
-            background-color: #fff;
-            color: #9147ff;
-            border: solid 1px #9147ff;
-            border-radius: 5px;
-            padding: 5px 10px;
-            text-transform: uppercase;
-        }
-        #panel button:hover {
-            background-color: #9147ff;
-            color: #fff;
-            cursor: pointer;
-        }
+    .panel input {
+        width: 100px;
+        margin-bottom: 5px;
+        padding: 5px;
+        border-radius: 3px;
+        border: solid 1px #ddd;
+        font-size: 11px;
+    }
+    .panel button {
+        background-color: #fff;
+        color: #9147ff;
+        border: solid 1px #9147ff;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-transform: uppercase;
+    }
+    .panel button:hover {
+        background-color: #9147ff;
+        color: #fff;
+        cursor: pointer;
+    }
+    .panel h3 {
+        width: 200px;
+        text-align: center;
+    }
 </style>
 <html>
     <title>Snake MMO</title>
     <body>
         <div id="board"></div>
-        <div id="panel">
+        <div id="death-screen" class="panel">
+            <h3>ded :(</h3>
+            <button id="retry">&#8634;</button>
+        </div>
+        <div id="panel" class="panel">
             <input type="text" id="user-id" placeholder="ID" />
             <input type="text" id="session-id" placeholder="Session ID" />
             <button id="join">Join</button>

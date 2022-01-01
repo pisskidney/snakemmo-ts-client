@@ -8,12 +8,14 @@ const COLOR_SNAKES = ['#FFD166', '#06D6A0', '#118AB2', '#073B4C'];
 
 interface State {
     userID: number,
-    sessionID: string
+    sessionID: string,
+    websocket: WebSocket
 };
 
 let state: State = {
     userID: undefined,
-    sessionID: undefined
+    sessionID: undefined,
+    websocket: undefined
 };
 
 
@@ -103,6 +105,22 @@ function drawDefaultCell(coords: Coordinates) {
     cell.style.borderRadius = '0px';
 }
 
+function showPanel(panel: string) {
+    let panelElement = document.getElementById(panel);
+    panelElement.style.display = 'flex';
+    let boardElement = document.getElementById('board');
+    boardElement.style.transition = 'opacity 1s ease-in';
+    boardElement.style.opacity = '0.5';
+}
+
+function hidePanel(panel: string) {
+    let panelElement = document.getElementById(panel);
+    panelElement.style.display = 'none';
+    let boardElement = document.getElementById('board');
+    boardElement.style.transition = 'none';
+    boardElement.style.opacity = '1';
+}
+
 function getWebsocketServer() {
     if (window.location.host == 'pisskidney.github.io') {
         return 'wss://snakemmo.herokuapp.com/';
@@ -113,85 +131,88 @@ function getWebsocketServer() {
     }
 }
 
-function sendMoves(websocket: WebSocket) {
-    window.addEventListener('keydown', (e) => {
-        let event = {
-            type: 'play',
-            user_id: state.userID,
-            direction: ''
-        };
-        switch (e.key) {
-            case 'ArrowUp':
-            case 'w':
-            case 'W':
-                event.direction = 'up';
-                break;
-            case 'ArrowDown':
-            case 's':
-            case 'S':
-                event.direction = 'down';
-                break;
-            case 'ArrowLeft':
-            case 'a':
-            case 'A':
-                event.direction = 'left';
-                break;
-            case 'ArrowRight':
-            case 'd':
-            case 'D':
-                event.direction = 'right';
-                break;
-        }
-        websocket.send(JSON.stringify(event));
-    });
+function sendMoves(e: KeyboardEvent) {
+    let event = {
+        type: 'play',
+        user_id: state.userID,
+        direction: ''
+    };
+    switch (e.key) {
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+            event.direction = 'up';
+            break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+            event.direction = 'down';
+            break;
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+            event.direction = 'left';
+            break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+            event.direction = 'right';
+            break;
+    }
+    state.websocket.send(JSON.stringify(event));
 }
 
-function receiveMoves(websocket: WebSocket) {
-    websocket.addEventListener('message', ({ data }) => {
-        const event = JSON.parse(data);
-        switch (event.type) {
-            case 'tick':
-                clearAllSnakes(snakes);
-                snakes.clear();
-                for (let user_id in event.snakes) {
-                    snakes.set(parseInt(user_id), event.snakes[user_id]);
-                }
-                drawSnakes(snakes);
+function receiveMoves({ data }: MessageEvent) {
+    const event = JSON.parse(data);
+    switch (event.type) {
+        case 'tick':
+            clearAllSnakes(snakes);
+            snakes.clear();
+            for (let user_id in event.snakes) {
+                snakes.set(parseInt(user_id), event.snakes[user_id]);
+            }
+            drawSnakes(snakes);
 
-                apples.length = 0;
-                for (let coords of event.apples) {
-                    apples.push(coords);
-                }
-                drawApples(apples);
-                break;
-            case 'win':
-                // showMessage(`Player ${event.player} wins!`);
-                // No further messages are expected; close the WebSocket connection.
-                websocket.close(1000);
-                break;
-            case 'error':
-                // showMessage(event.message);
-                break;
-            default:
-                throw new Error(`Unsupported event type: ${event.type}.`);
-        }
-    });
+            apples.length = 0;
+            for (let coords of event.apples) {
+                apples.push(coords);
+            }
+            drawApples(apples);
+
+            if (event.deaths.includes(state.userID)) {
+                showPanel('death-screen');
+            }
+
+            break;
+        case 'error':
+            // showMessage(event.message);
+            break;
+        default:
+            throw new Error(`Unsupported event type: ${event.type}.`);
+    }
 }
 
 function initGame() {
     // Open the WebSocket connection and register event handlers.
-    const websocket = new WebSocket(getWebsocketServer());
-    websocket.addEventListener('open', () => {
-        const event = {
-            type: 'join',
-            user_id: parseInt((<HTMLInputElement> document.getElementById('user-id')).value),
-            session_id: (<HTMLInputElement> document.getElementById('session-id')).value
-        };
-        const params = new URLSearchParams(window.location.search);
-        websocket.send(JSON.stringify(event));
+    state.websocket = new WebSocket(getWebsocketServer());
+    state.websocket.addEventListener('message', receiveMoves);
+    joinGame();
+}
+
+function joinGame() {
+    state.websocket.addEventListener('open', () => {
+        newSnake();
     });
-    receiveMoves(websocket);
-    sendMoves(websocket);
+    window.addEventListener('keydown', sendMoves);
+}
+
+function newSnake() {
+    const event = {
+        type: 'join',
+        user_id: state.userID,
+        session_id: state.sessionID
+    };
+    state.websocket.send(JSON.stringify(event));
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -207,9 +228,13 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
             state.userID = parseInt(userIDElement.value);
             state.sessionID = sessionIDElement.value;
-            document.getElementById('panel').style.display = 'none';
+            hidePanel('panel');
             initGame();
         }
+    });
+    document.getElementById('retry').addEventListener('click', () => {
+        hidePanel('death-screen');
+        newSnake();
     });
 });
 
