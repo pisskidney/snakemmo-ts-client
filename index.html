@@ -3,9 +3,14 @@
     html {
         font-family: Arial, Helvetica, sans-serif;
     }
+    body {
+        text-align: center;
+    }
     #board {
         position: relative;
         transition: opacity 1s ease-in;
+        width: 1500px;
+        margin: 0px auto;
     }
     .panel#death-screen {
         display: none;
@@ -30,9 +35,16 @@
         margin-bottom: 5px;
         padding: 5px;
         border-radius: 3px;
-        border: solid 1px #ddd;
+        border: solid 1px #efefef;
         font-size: 11px;
+        color: #aaa;
     }
+        .panel input:focus {
+            outline: none;
+        }
+        .panel input::placeholder {
+        color: #ccc;
+        }
     .panel button {
         background-color: #fff;
         color: #9147ff;
@@ -50,19 +62,37 @@
         width: 200px;
         text-align: center;
     }
+    .panel .glass {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(160deg, rgba(80,179,191,0.1) 5%, rgba(61,180,175,0.1) 15%, rgba(116,205,201,0.1) 30%, rgba(255,255,255,0.1) 70%);
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        border: solid 1px #efefef;
+    }
+    #panel > .glass > button {
+        margin-top: 10px;
+    }
 </style>
 <html>
     <title>Snake MMO</title>
     <body>
         <div id="board"></div>
         <div id="death-screen" class="panel">
-            <h3>ded :(</h3>
-            <button id="retry">&#8634;</button>
+            <div class="glass">
+                <h3>ded :(</h3>
+                <button id="retry">&#8634;</button>
+            </div>
         </div>
         <div id="panel" class="panel">
-            <input type="text" id="user-id" placeholder="ID" />
-            <input type="text" id="session-id" placeholder="Session ID" />
-            <button id="join">Join</button>
+            <div class="glass">
+                <input type="text" id="user-id" placeholder="ID" />
+                <input type="text" id="session-id" placeholder="Session ID" />
+                <button id="join">Join</button>
+            </div>
         </div>
         <script src="main.js" type="module"></script>
     </body>

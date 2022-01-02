@@ -1,5 +1,5 @@
 const ROWS = 75;
-const COLS = 100;
+const COLS = 150;
 const CELL_WIDTH = 10;
 const CELL_HEIGHT = 10;
 
@@ -111,6 +111,8 @@ function showPanel(panel: string) {
     let boardElement = document.getElementById('board');
     boardElement.style.transition = 'opacity 1s ease-in';
     boardElement.style.opacity = '0.5';
+    boardElement.style.transition = 'filter 1s ease-in';
+    boardElement.style.filter = 'grayscale(100%) blur(10px)';
 }
 
 function hidePanel(panel: string) {
@@ -119,6 +121,7 @@ function hidePanel(panel: string) {
     let boardElement = document.getElementById('board');
     boardElement.style.transition = 'none';
     boardElement.style.opacity = '1';
+    boardElement.style.filter = 'none';
 }
 
 function getWebsocketServer() {
