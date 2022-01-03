@@ -225,7 +225,7 @@ function populateSessionList(data: SessionList) {
         row.classList.add('session-list-row');
         let icon = document.createElement('div');
         icon.classList.add('icon');
-        icon.style.backgroundImage = `url(/assets/images/${sessionID}.png)`;
+        icon.style.backgroundImage = `url(assets/images/${sessionID}.png)`;
         let dataContainer = document.createElement('div');
         let name = document.createElement('div');
         name.innerHTML = data[sessionID].name;
