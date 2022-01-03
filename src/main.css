@@ -8,7 +8,7 @@ body {
 #board {
     position: relative;
     transition: opacity 1s ease-in;
-    width: 1500px;
+    width: 1650px;
     margin: 0px auto;
     filter: blur(2px);
 }

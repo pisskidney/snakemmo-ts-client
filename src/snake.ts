@@ -3,19 +3,22 @@ const COLS = 150;
 const CELL_WIDTH = 10;
 const CELL_HEIGHT = 10;
 
-const COLOR_APPLE = '#EF476F';
 const COLOR_SNAKES = ['#FFD166', '#06D6A0', '#118AB2', '#073B4C'];
 
 type State = {
     userID: number,
     sessionID: string,
-    websocket: WebSocket
+    websocket: WebSocket,
+    assignedColors: Set<string>,
+    colorAssignments: Map<number, string>,
 };
 
 let state: State = {
     userID: undefined,
     sessionID: undefined,
-    websocket: undefined
+    websocket: undefined,
+    assignedColors: new Set(),
+    colorAssignments: new Map()
 };
 
 
@@ -64,8 +67,8 @@ function initBoard() {
         for (let j = 0; j < COLS; j++) {
             let cell = document.createElement('div');
             cell.style.position = 'absolute';
-            cell.style.left = j * CELL_WIDTH + 'px';
-            cell.style.top = i * CELL_HEIGHT + 'px';
+            cell.style.left = j * (CELL_WIDTH + 1) + 'px';
+            cell.style.top = i * (CELL_HEIGHT + 1) + 'px';
             cell.style.width = CELL_WIDTH + 'px';
             cell.style.height = CELL_HEIGHT + 'px';
             board.appendChild(cell);
@@ -95,7 +98,20 @@ function drawSnakes(snakes: Map<number, Array<[number, number]>>) {
 
 function assignCell(coords: Coordinates, snakeID: number) {
     let cell = cells.get(coords.hash);
-    cell.style.backgroundColor = COLOR_SNAKES[snakeID];
+    let color = 'red';
+    if (state.colorAssignments.has(snakeID)) {
+        color = state.colorAssignments.get(snakeID);
+    } else {
+        for (let candidate of COLOR_SNAKES) {
+            if (!state.assignedColors.has(candidate)) {
+                state.assignedColors.add(candidate);
+                state.colorAssignments.set(snakeID, candidate);
+                color = candidate;
+                break;
+            }
+        }
+    }
+    cell.style.backgroundColor = color;
     cell.style.backgroundImage = 'none';
 }
 
