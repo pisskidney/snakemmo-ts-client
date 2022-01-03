@@ -4,7 +4,6 @@ const CELL_WIDTH = 10;
 const CELL_HEIGHT = 10;
 const COLOR_APPLE = '#EF476F';
 const COLOR_SNAKES = ['#FFD166', '#06D6A0', '#118AB2', '#073B4C'];
-;
 let state = {
     userID: undefined,
     sessionID: undefined,
@@ -141,9 +140,12 @@ function sendMoves(e) {
     }
     state.websocket.send(JSON.stringify(event));
 }
-function receiveMoves({ data }) {
+function receiveMessages({ data }) {
     const event = JSON.parse(data);
     switch (event.type) {
+        case 'session_list':
+            populateSessionList(event['sessions']);
+            break;
         case 'tick':
             clearAllSnakes(snakes);
             snakes.clear();
@@ -166,15 +168,57 @@ function receiveMoves({ data }) {
             throw new Error(`Unsupported event type: ${event.type}.`);
     }
 }
+function requestSessionList() {
+    console.log('reqeusted session list');
+    let event = {
+        type: 'session_list'
+    };
+    state.websocket.send(JSON.stringify(event));
+}
+function populateSessionList(data) {
+    console.log(data);
+    let parent = document.querySelector('#session-list .glass');
+    for (let sessionID in data) {
+        let row = document.createElement('div');
+        row.classList.add('session-list-row');
+        let icon = document.createElement('div');
+        icon.classList.add('icon');
+        icon.style.backgroundImage = `url(/assets/images/${sessionID}.png)`;
+        let dataContainer = document.createElement('div');
+        let name = document.createElement('div');
+        name.innerHTML = data[sessionID].name;
+        name.classList.add('name');
+        let players = document.createElement('div');
+        players.innerHTML = `Players: ${data[sessionID].players}/32`;
+        players.classList.add('players');
+        let observers = document.createElement('div');
+        observers.innerHTML = `Observers: ${data[sessionID].observers}`;
+        observers.classList.add('observers');
+        let joinButton = document.createElement('button');
+        dataContainer.appendChild(name).appendChild(players).appendChild(observers);
+        joinButton.innerHTML = '&#8629';
+        joinButton.addEventListener('click', function () {
+            state.sessionID = sessionID;
+            state.userID = Math.random() * 10000;
+            joinGame();
+            hidePanel('session-list');
+        });
+        row.appendChild(icon);
+        row.appendChild(name);
+        row.appendChild(dataContainer);
+        row.appendChild(joinButton);
+        parent.appendChild(row);
+    }
+}
 function initGame() {
     state.websocket = new WebSocket(getWebsocketServer());
-    state.websocket.addEventListener('message', receiveMoves);
-    joinGame();
+    state.websocket.addEventListener('open', () => {
+        requestSessionList();
+    });
+    state.websocket.addEventListener('message', receiveMessages);
 }
 function joinGame() {
-    state.websocket.addEventListener('open', () => {
-        newSnake();
-    });
+    newSnake();
     window.addEventListener('keydown', sendMoves);
 }
 function newSnake() {
@@ -187,22 +231,7 @@ function newSnake() {
 }
 window.addEventListener('DOMContentLoaded', () => {
     initBoard();
-    document.getElementById('join').addEventListener('click', () => {
-        let userIDElement = document.getElementById('user-id');
-        let sessionIDElement = document.getElementById('session-id');
-        if (!userIDElement.value) {
-            userIDElement.style.borderColor = 'red';
-        }
-        else if (!sessionIDElement.value) {
-            sessionIDElement.style.borderColor = 'red';
-        }
-        else {
-            state.userID = parseInt(userIDElement.value);
-            state.sessionID = sessionIDElement.value;
-            hidePanel('panel');
-            initGame();
-        }
-    });
+    initGame();
     document.getElementById('retry').addEventListener('click', () => {
         hidePanel('death-screen');
         newSnake();

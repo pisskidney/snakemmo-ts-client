@@ -5,12 +5,14 @@
     }
     body {
         text-align: center;
+        margin: 0;
     }
     #board {
         position: relative;
         transition: opacity 1s ease-in;
         width: 1500px;
         margin: 0px auto;
+        filter: blur(2px);
     }
     .panel#death-screen {
         display: none;
@@ -71,10 +73,43 @@
         background: linear-gradient(160deg, rgba(80,179,191,0.1) 5%, rgba(61,180,175,0.1) 15%, rgba(116,205,201,0.1) 30%, rgba(255,255,255,0.1) 70%);
         background-color: rgba(255, 255, 255, 0.7);
         border-radius: 10px;
-        border: solid 1px #efefef;
+        border: solid 1px #f9f9f9;
     }
-    #panel > .glass > button {
-        margin-top: 10px;
+    .panel .session-list-row {
+        display: flex;
+        flex-direction: row;
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 3px 3px 10px 0px rgba(57, 28, 100, 0.2);
+        border-radius: 5px;
+        margin: 10px auto;
+    }
+        .panel .session-list-row:hover {
+            box-shadow: 3px 3px 10px 0px rgba(57, 28, 100, 0.5);
+        }
+    .panel .session-list-row .name {
+        text-align: left;
+        width: 100px;
+        margin-left: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #3f6595;
+    }
+    .panel .session-list-row .players,
+    .panel .session-list-row .observers {
+        font-size: 11px;
+        font-weight: 100;
+        color: #aaa;
+    }
+    .panel .session-list-row .icon {
+        width: 40px;
+        height: 40px;
+        background-size: cover;
+        border-radius: 30%;
+    }
+    .panel .session-list-row  button {
+        display: block;
+        margin-left: 20px;
     }
 </style>
 <html>
@@ -87,11 +122,8 @@
                 <button id="retry">&#8634;</button>
             </div>
         </div>
-        <div id="panel" class="panel">
+        <div id="session-list" class="panel">
             <div class="glass">
-                <input type="text" id="user-id" placeholder="ID" />
-                <input type="text" id="session-id" placeholder="Session ID" />
-                <button id="join">Join</button>
             </div>
         </div>
         <script src="main.js" type="module"></script>
