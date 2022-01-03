@@ -1,0 +1,113 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+}
+body {
+    text-align: center;
+    margin: 0;
+}
+#board {
+    position: relative;
+    transition: opacity 1s ease-in;
+    width: 1500px;
+    margin: 0px auto;
+    filter: blur(2px);
+}
+.panel#death-screen {
+    display: none;
+}
+.panel button#retry {
+    font-size: 22px;
+}
+.panel {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: transparent;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+}
+.panel input {
+    width: 100px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 3px;
+    border: solid 1px #efefef;
+    font-size: 11px;
+    color: #aaa;
+}
+    .panel input:focus {
+        outline: none;
+    }
+    .panel input::placeholder {
+    color: #ccc;
+    }
+.panel button {
+    background-color: #fff;
+    color: #9147ff;
+    border: solid 1px rgba(145, 71, 255, 0.21);
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+}
+.panel button:hover {
+    background: rgb(255,225,253);
+    background: linear-gradient(342deg, rgba(255,225,253,1) 11%, rgba(237,236,255,1) 26%, rgba(229,255,254,1) 42%, rgba(255,255,255,1) 78%, rgba(255,255,255,1) 100%);
+    cursor: pointer;
+}
+.panel h3 {
+    width: 200px;
+    text-align: center;
+}
+.panel .glass {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(160deg, rgba(80,179,191,0.1) 5%, rgba(61,180,175,0.1) 15%, rgba(116,205,201,0.1) 30%, rgba(255,255,255,0.1) 70%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    border: solid 1px #f9f9f9;
+}
+.panel .session-list-row {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 20px;
+    background-color: rgba(250, 252, 255, 0.8);
+    box-shadow: 3px 3px 10px 0px rgba(57, 28, 100, 0.1);
+    border-radius: 5px;
+    margin: 10px auto;
+}
+    .panel .session-list-row:hover {
+        box-shadow: 3px 3px 10px 0px rgba(57, 28, 100, 0.2);
+    }
+.panel .session-list-row .name {
+    text-align: left;
+    width: 100px;
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #3f6595;
+}
+.panel .session-list-row .players,
+.panel .session-list-row .observers {
+    font-size: 11px;
+    font-weight: 100;
+    color: #aaa;
+}
+.panel .session-list-row .icon {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    border-radius: 30%;
+}
+.panel .session-list-row button {
+    display: block;
+    margin-left: 20px;
+    height: 40px;
+    width: 40px;
+}

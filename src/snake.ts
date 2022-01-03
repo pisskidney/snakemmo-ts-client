@@ -80,9 +80,7 @@ function drawApples(apples: Array<[number, number]>) {
     for (let coords of apples) {
         const cellCoords = new Coordinates(coords[0], coords[1]);
         let cell = cells.get(cellCoords.hash);
-        cell.style.backgroundColor = COLOR_APPLE;
-        cell.style.border = 'none';
-        cell.style.borderRadius = '50%';
+        cell.style.backgroundImage = 'url(assets/images/apple3.png)';
     }
 }
 
@@ -98,6 +96,7 @@ function drawSnakes(snakes: Map<number, Array<[number, number]>>) {
 function assignCell(coords: Coordinates, snakeID: number) {
     let cell = cells.get(coords.hash);
     cell.style.backgroundColor = COLOR_SNAKES[snakeID];
+    cell.style.backgroundImage = 'none';
 }
 
 function clearAllSnakes(snakes: Map<number, Array<Array<number>>>) {
