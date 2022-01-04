@@ -152,7 +152,7 @@ function hidePanel(panel: string) {
 
 function getWebsocketServer() {
     if (window.location.host == 'pisskidney.github.io') {
-        return 'wss://snakemmo-eu.herokuapp.com/';
+        return 'wss://snakemmo.herokuapp.com/';
     } else if (window.location.host == 'localhost:8000') {
         return 'ws://localhost:8001/';
     } else {
