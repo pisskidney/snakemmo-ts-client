@@ -114,7 +114,7 @@ function hidePanel(panel) {
     boardElement.style.filter = 'none';
 }
 function getWebsocketServer() {
-    if (window.location.host == 'pisskidney.github.io') {
+    if (window.location.host == 'vermin.io') {
         return 'wss://snakemmo.herokuapp.com/';
     }
     else if (window.location.host == 'localhost:8000') {
