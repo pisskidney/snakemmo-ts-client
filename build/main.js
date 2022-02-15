@@ -2,7 +2,6 @@ const ROWS = 75;
 const COLS = 150;
 const CELL_WIDTH = 10;
 const CELL_HEIGHT = 10;
-const COLOR_SNAKES = ['#FFD166', '#06D6A0', '#118AB2', '#073B4C'];
 let state = {
     userID: undefined,
     sessionID: undefined,
@@ -55,8 +54,8 @@ function drawApples(apples) {
 }
 function drawSnakes(snakes) {
     for (const [snakeID, coords] of snakes) {
-        for (let i = 0; i < coords.length; i++) {
-            const cellCoords = new Coordinates(coords[i][0], coords[i][1]);
+        for (let i = 0; i < coords.cells.length; i++) {
+            const cellCoords = new Coordinates(coords.cells[i][0], coords.cells[i][1]);
             assignCell(cellCoords, snakeID);
         }
     }
@@ -69,22 +68,16 @@ function assignCell(coords, snakeID) {
         color = state.colorAssignments.get(snakeID);
     }
     else {
-        for (let candidate of COLOR_SNAKES) {
-            if (!state.assignedColors.has(candidate)) {
-                state.assignedColors.add(candidate);
-                state.colorAssignments.set(snakeID, candidate);
-                color = candidate;
-                break;
-            }
-        }
+        let randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        state.colorAssignments.set(snakeID, randomColor);
     }
     cell.style.backgroundColor = color;
     cell.style.backgroundImage = 'none';
 }
 function clearAllSnakes(snakes) {
     for (const [snakeID, coords] of snakes) {
-        for (let i = 0; i < coords.length; i++) {
-            const cellCoords = new Coordinates(coords[i][0], coords[i][1]);
+        for (let i = 0; i < coords.cells.length; i++) {
+            const cellCoords = new Coordinates(coords.cells[i][0], coords.cells[i][1]);
             drawDefaultCell(cellCoords);
         }
     }
@@ -190,6 +183,7 @@ function requestSessionList() {
 }
 function populateSessionList(data) {
     let parent = document.querySelector('#session-list .glass');
+    parent.innerHTML = '';
     for (let sessionID in data) {
         let row = document.createElement('div');
         row.classList.add('session-list-row');

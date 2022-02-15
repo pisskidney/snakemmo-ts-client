@@ -3,8 +3,6 @@ const COLS = 150;
 const CELL_WIDTH = 10;
 const CELL_HEIGHT = 10;
 
-const COLOR_SNAKES = ['#FFD166', '#06D6A0', '#118AB2', '#073B4C'];
-
 type State = {
     userID: number,
     sessionID: string,
@@ -22,7 +20,7 @@ let state: State = {
 };
 
 
-type Snake = Array<[number, number]>;
+type Snake = {direction: string, cells: Array<[number, number]>};
 
 type Session = {
     name: string,
@@ -87,10 +85,10 @@ function drawApples(apples: Array<[number, number]>) {
     }
 }
 
-function drawSnakes(snakes: Map<number, Array<[number, number]>>) {
+function drawSnakes(snakes: Map<number, {direction: string, cells: Array<[number, number]>}>) {
     for(const [snakeID, coords] of snakes) {
-        for (let i = 0; i < coords.length; i++) {
-            const cellCoords = new Coordinates(coords[i][0], coords[i][1]);
+        for (let i = 0; i < coords.cells.length; i++) {
+            const cellCoords = new Coordinates(coords.cells[i][0], coords.cells[i][1]);
             assignCell(cellCoords, snakeID);
         }
     };
@@ -102,23 +100,17 @@ function assignCell(coords: Coordinates, snakeID: number) {
     if (state.colorAssignments.has(snakeID)) {
         color = state.colorAssignments.get(snakeID);
     } else {
-        for (let candidate of COLOR_SNAKES) {
-            if (!state.assignedColors.has(candidate)) {
-                state.assignedColors.add(candidate);
-                state.colorAssignments.set(snakeID, candidate);
-                color = candidate;
-                break;
-            }
-        }
+        let randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+        state.colorAssignments.set(snakeID, randomColor);
     }
     cell.style.backgroundColor = color;
     cell.style.backgroundImage = 'none';
 }
 
-function clearAllSnakes(snakes: Map<number, Array<Array<number>>>) {
+function clearAllSnakes(snakes: Map<number, Snake>) {
     for(const [snakeID, coords] of snakes) {
-        for (let i = 0; i < coords.length; i++) {
-            const cellCoords = new Coordinates(coords[i][0], coords[i][1]);
+        for (let i = 0; i < coords.cells.length; i++) {
+            const cellCoords = new Coordinates(coords.cells[i][0], coords.cells[i][1]);
             drawDefaultCell(cellCoords);
         }
     };
@@ -233,6 +225,7 @@ function requestSessionList() {
 
 function populateSessionList(data: SessionList) {
     let parent = document.querySelector('#session-list .glass');
+    parent.innerHTML = '';
     for (let sessionID in data) {
         let row = document.createElement('div');
         row.classList.add('session-list-row');

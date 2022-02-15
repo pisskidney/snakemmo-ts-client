@@ -109,6 +109,10 @@ h1 {
     width: 200px;
     text-align: center;
 }
+.panel h3.ded {
+    font-family: "BungeeShade";
+    font-size: 22px;
+}
 .panel .glass {
     padding: 20px;
     display: flex;
