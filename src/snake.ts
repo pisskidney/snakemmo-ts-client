@@ -7,7 +7,6 @@ type State = {
     userID: number,
     sessionID: string,
     websocket: WebSocket,
-    assignedColors: Set<string>,
     colorAssignments: Map<number, string>,
 };
 
@@ -15,7 +14,6 @@ let state: State = {
     userID: undefined,
     sessionID: undefined,
     websocket: undefined,
-    assignedColors: new Set(),
     colorAssignments: new Map()
 };
 
@@ -100,7 +98,7 @@ function assignCell(coords: Coordinates, snakeID: number) {
     if (state.colorAssignments.has(snakeID)) {
         color = state.colorAssignments.get(snakeID);
     } else {
-        let randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+        let randomColor = `#${Math.floor(Math.random()*13777215).toString(16)}`;
         state.colorAssignments.set(snakeID, randomColor);
     }
     cell.style.backgroundColor = color;
@@ -247,7 +245,7 @@ function populateSessionList(data: SessionList) {
         joinButton.innerHTML = '&#8629';
         joinButton.addEventListener('click', function() {
             state.sessionID = sessionID;
-            state.userID = Math.random() * 10000;
+            state.userID = Math.random() * 1000000;
             joinGame();
             hidePanel('session-list');
         });
