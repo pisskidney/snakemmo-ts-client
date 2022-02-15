@@ -183,14 +183,12 @@ function receiveMessages({ data }) {
     }
 }
 function requestSessionList() {
-    console.log('reqeusted session list');
     let event = {
         type: 'session_list'
     };
     state.websocket.send(JSON.stringify(event));
 }
 function populateSessionList(data) {
-    console.log(data);
     let parent = document.querySelector('#session-list .glass');
     for (let sessionID in data) {
         let row = document.createElement('div');

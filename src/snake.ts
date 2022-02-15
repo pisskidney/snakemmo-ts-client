@@ -225,7 +225,6 @@ function receiveMessages({ data }: MessageEvent) {
 }
 
 function requestSessionList() {
-    console.log('reqeusted session list');
     let event = {
         type: 'session_list'
     };
@@ -233,7 +232,6 @@ function requestSessionList() {
 }
 
 function populateSessionList(data: SessionList) {
-    console.log(data);
     let parent = document.querySelector('#session-list .glass');
     for (let sessionID in data) {
         let row = document.createElement('div');

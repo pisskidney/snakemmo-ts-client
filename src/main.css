@@ -1,3 +1,7 @@
+@font-face {
+    font-family: "BungeeShade";
+    src: url("/assets/fonts/BungeeShade-Regular.ttf");
+}
 html {
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -11,6 +15,49 @@ body {
     width: 1650px;
     margin: 0px auto;
     filter: blur(2px);
+}
+h1 {
+    display: block;
+    font-family: "BungeeShade";
+	font-size: 48px;
+    color: #fff;
+	font-weight: normal;
+	width: 100%;
+	text-align: center;
+	background: linear-gradient(
+		-45deg,
+		#4bc0c8 25%,
+		#d6baff 25%,
+		#d6baff 50%,
+		#4bc0c8 50%,
+		#4bc0c8 75%,
+		#d6baff 75%,
+		#d6baff
+    );
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 20px 20px;
+	background-position: 0 0;
+	animation: stripes 1s linear infinite;
+    margin-top: 0px;
+}
+    h1 > .first-word {
+        font-size: 32px;
+    }
+    h1 > span {
+        display: block;
+    }
+@keyframes stripes {
+	100% {
+		background-position: 20px 0, 20px 0, 20px 0;
+	}
+}
+#logo {
+    width: 64px;
+    height: 64px;
+    background: url('/assets/images/snake2.png');
+    background-size: contain;
+    border: none;
 }
 .panel#death-screen {
     display: none;
@@ -111,3 +158,16 @@ body {
     height: 40px;
     width: 40px;
 }
+#loader {
+    width: 32px;
+    height: 32px;
+}
+footer {
+    color: #3f659544;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+    footer .bla {
+        display: none;
+    }
