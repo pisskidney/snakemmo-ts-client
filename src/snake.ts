@@ -1,5 +1,5 @@
-const ROWS = 75;
-const COLS = 150;
+const ROWS = 50;
+const COLS = 100;
 const CELL_WIDTH = 10;
 const CELL_HEIGHT = 10;
 
@@ -245,7 +245,7 @@ function populateSessionList(data: SessionList) {
         joinButton.innerHTML = '&#8629';
         joinButton.addEventListener('click', function() {
             state.sessionID = sessionID;
-            state.userID = Math.random() * 1000000;
+            state.userID = Math.floor(Math.random() * 1000000);
             joinGame();
             hidePanel('session-list');
         });
