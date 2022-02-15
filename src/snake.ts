@@ -1,7 +1,7 @@
 const ROWS = 50;
 const COLS = 100;
-const CELL_WIDTH = 10;
-const CELL_HEIGHT = 10;
+const CELL_WIDTH = 12;
+const CELL_HEIGHT = 12;
 
 type State = {
     userID: number,
@@ -80,6 +80,7 @@ function drawApples(apples: Array<[number, number]>) {
         const cellCoords = new Coordinates(coords[0], coords[1]);
         let cell = cells.get(cellCoords.hash);
         cell.style.backgroundImage = 'url(assets/images/apple3.png)';
+        cell.style.backgroundRepeat = 'no-repeat';
     }
 }
 
