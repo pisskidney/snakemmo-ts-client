@@ -117,7 +117,7 @@ function hidePanel(panel) {
 }
 function getWebsocketServer() {
     if (window.location.host == 'multiplayersnake.io') {
-        return 'wss://snakemmo.herokuapp.com/';
+        return 'ws://snakemmo.herokuapp.com/';
     }
     else if (window.location.host == 'localhost:8000') {
         return 'ws://localhost:8001/';
