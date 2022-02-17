@@ -78,6 +78,7 @@ function assignCell(coords, snakeID) {
         }
         let randomColor = `rgb(${r}, ${g}, ${b})`;
         state.colorAssignments.set(snakeID, randomColor);
+        color = randomColor;
     }
     cell.style.backgroundColor = color;
     cell.style.backgroundImage = 'none';
