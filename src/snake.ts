@@ -99,7 +99,15 @@ function assignCell(coords: Coordinates, snakeID: number) {
     if (state.colorAssignments.has(snakeID)) {
         color = state.colorAssignments.get(snakeID);
     } else {
-        let randomColor = `#${Math.floor(Math.random()*13777215).toString(16)}`;
+        let r = 255;
+        let g = 255;
+        let b = 255;
+        while (r + g + b > 600) {
+            r = Math.floor(Math.random() * 255);
+            g = Math.floor(Math.random() * 255);
+            b = Math.floor(Math.random() * 255);
+        }
+        let randomColor = `rgb(${r}, ${g}, ${b})`;
         state.colorAssignments.set(snakeID, randomColor);
     }
     cell.style.backgroundColor = color;
