@@ -1,10 +1,18 @@
-v0.0.3 - ?
+v0.3.0 - ?
 ===================
 
 ### Roadmap
 - input will be reflected on client directly
 - minor sanity check and consistency checks will be done on client
 - client will send snake position to server, along with action
+
+v0.2.0 - 2021-02-20
+===================
+
+### State
+- Improved connection logging and process persistance
+- Improved meta description
+- Improved versioning
 
 v0.0.2 - 2021-02-18
 ===================
