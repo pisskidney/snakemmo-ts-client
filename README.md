@@ -1,1 +1,1 @@
-Try it out at <a href="http://multiplayersnake.io">http://multiplayersnake.io</a>
+Try it out at <a href="https://multiplayersnake.io">https://multiplayersnake.io</a>
