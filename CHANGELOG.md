@@ -6,6 +6,11 @@ v0.3.0 - ?
 - minor sanity check and consistency checks will be done on client
 - client will send snake position to server, along with action
 
+- add feedback contact to game page
+- add mmo elements
+- add items
+- performance improvements
+
 v0.2.0 - 2021-02-20
 ===================
 
